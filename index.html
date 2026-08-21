@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detektif Jejak Karbon - Arta Saloka x Akademi Kompos</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Patrick+Hand&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2canvas for image report export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandGreen: '#1e3a2b',
+                        brandLightGreen: '#2d5a41',
+                        brandAccentGreen: '#3e8e58',
+                        brandOrange: '#d9532f',
+                        brandLightOrange: '#f48061',
+                        brandCream: '#f7f4eb',
+                        brandPaper: '#fffef9',
+                        brandYellow: '#f5c842'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        hand: ['Patrick Hand', 'cursive'],
+                        mono: ['Courier Prime', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f2eee3;
+            background-image: radial-gradient(#d3cbbe 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1e3a2b;
+        }
+
+        .stamp-border {
+            border: 4px dashed #1e3a2b;
+            border-radius: 16px;
+        }
+
+        .zine-card {
+            background-color: #fffef9;
+            box-shadow: 6px 6px 0px #1e3a2b;
+            border: 2px solid #1e3a2b;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .zine-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 8px 8px 0px #1e3a2b;
+        }
+
+        .tape-effect {
+            position: relative;
+        }
+        .tape-effect::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 110px;
+            height: 24px;
+            background-color: rgba(245, 200, 66, 0.65);
+            border-left: 2px dashed rgba(0,0,0,0.1);
+            border-right: 2px dashed rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .badge-stamp {
+            background: #d9532f;
+            color: white;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+            padding: 4px 12px;
+            transform: rotate(-3deg);
+            display: inline-block;
+            border: 2px solid #1e3a2b;
+            box-shadow: 2px 2px 0px #1e3a2b;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7f4eb;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e3a2b;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-slate-800 antialiased selection:bg-amber-300">
+
+    <div id="toastNotification" class="fixed top-5 right-5 z-50 transform transition-all duration-300 translate-y-[-100px] opacity-0 pointer-events-none">
+        <div class="bg-brandGreen text-white px-5 py-3 rounded-2xl border-2 border-amber-300 shadow-2xl flex items-center gap-3">
+            <span id="toastIcon" class="text-xl">✨</span>
+            <span id="toastMessage" class="text-xs font-bold font-mono">Pesan notifikasi</span>
+        </div>
+    </div>
+
+    <header class="sticky top-0 z-40 bg-brandPaper border-b-2 border-brandGreen px-4 py-3 shadow-md">
+        <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-brandOrange text-white flex items-center justify-center font-extrabold text-xl border-2 border-brandGreen shadow">
+                    🔍
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-black text-brandGreen tracking-tight leading-none">
+                        DETEKTIF JEJAK KARBON
+                    </h1>
+                    <p class="text-xs text-slate-600 font-medium">Arta Saloka x Akademi Kompos • Green Impact Journey #1</p>
+                </div>
+            </div>
+
+            <!-- Status Indicator (Skor disembunyikan dari UI) -->
+            <div class="flex items-center gap-2 bg-brandCream px-4 py-1.5 rounded-xl border-2 border-brandGreen shadow-sm">
+                <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span class="text-xs font-bold text-brandGreen font-mono uppercase tracking-wider">Misi Aktif</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-5xl mx-auto w-full px-4 pt-6">
+        <div class="bg-brandPaper p-3 rounded-2xl border-2 border-brandGreen shadow-sm overflow-x-auto">
+            <div class="flex items-center justify-between min-w-[650px] gap-2 text-xs font-bold">
+                <button onclick="switchTab('tab-cover')" id="nav-tab-cover" class="nav-btn flex-1 py-2 px-3 rounded-xl border-2 border-brandGreen bg-brandOrange text-white flex items-center justify-center gap-2 shadow transition-all">
+                    <span>📑</span> 1. Cover Case
+                </button>
+                <div class="text-slate-300">➔</div>
+                <button onclick="switchTab('tab-tkp1')" id="nav-tab-tkp1" class="nav-btn flex-1 py-2 px-3 rounded-xl border-2 border-slate-300 bg-slate-100 text-slate-600 flex items-center justify-center gap-2 transition-all">
+                    <span>🌱</span> TKP #1 Ember
+                </button>
+                <div class="text-slate-300">➔</div>
+                <button onclick="switchTab('tab-tkp2')" id="nav-tab-tkp2" class="nav-btn flex-1 py-2 px-3 rounded-xl border-2 border-slate-300 bg-slate-100 text-slate-600 flex items-center justify-center gap-2 transition-all">
+                    <span>🧪</span> TKP #2 Biowash
+                </button>
+                <div class="text-slate-300">➔</div>
+                <button onclick="switchTab('tab-tkp3')" id="nav-tab-tkp3" class="nav-btn flex-1 py-2 px-3 rounded-xl border-2 border-slate-300 bg-slate-100 text-slate-600 flex items-center justify-center gap-2 transition-all">
+                    <span>♻️</span> TKP #3 Plastik
+                </button>
+                <div class="text-slate-300">➔</div>
+                <button onclick="switchTab('tab-tkp4')" id="nav-tab-tkp4" class="nav-btn flex-1 py-2 px-3 rounded-xl border-2 border-slate-300 bg-slate-100 text-slate-600 flex items-center justify-center gap-2 transition-all">
+                    <span>🚗</span> TKP #4 Transport
+                </button>
+                <div class="text-slate-300">➔</div>
+                <button onclick="switchTab('tab-report')" id="nav-tab-report" class="nav-btn flex-1 py-2 px-3 rounded-xl border-2 border-slate-300 bg-slate-100 text-slate-600 flex items-center justify-center gap-2 transition-all">
+                    <span>📋</span> Laporan Akhir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-5xl mx-auto w-full px-4 py-6 flex-grow">
+
+        <section id="tab-cover" class="tab-content block">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <!-- Left Title Card -->
+                <div class="md:col-span-7 zine-card p-6 md:p-8 bg-amber-50 relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 text-brandGreen font-black text-9xl pointer-events-none">
+                        ZINE
+                    </div>
+                    <div class="inline-block bg-brandGreen text-amber-300 text-xs font-mono font-bold px-3 py-1 rounded-md mb-3 border border-brandGreen">
+                        Arta Saloka x Akademi Kompos
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-brandGreen tracking-tight mb-2 leading-tight">
+                        CARBON ADDONS & ACADEMY KOMPOS
+                    </h2>
+                    <p class="font-hand text-2xl text-brandOrange font-bold mb-4">
+                        "Road to Akademi Kompos - Green Impact Journey #1"
+                    </p>
+                    <p class="text-sm text-slate-700 leading-relaxed mb-6">
+                        Selamat datang, Agen Detektif Lingkungan! Zine ini telah dipersonifikasi menjadi kalkulator & jurnal investigasi digital. Pecahkan setiap kasus di Tempat Kejadian Perkara (TKP), olah sampahmu, hitung penghematan karbon berdasarkan jurnal ilmiah, dan rilis laporan investigasimu!
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 text-xs font-mono font-semibold text-slate-600">
+                        <span class="bg-white border border-slate-300 px-2.5 py-1 rounded-md">#OVERLOCKED</span>
+                        <span class="bg-white border border-slate-300 px-2.5 py-1 rounded-md">#GIRLS BEYOND INDONESIA</span>
+                        <span class="bg-white border border-slate-300 px-2.5 py-1 rounded-md">#UDA</span>
+                        <span class="bg-white border border-slate-300 px-2.5 py-1 rounded-md">#YOTers Surabaya</span>
+                    </div>
+                </div>
+
+                <!-- Right Form Badge Card -->
+                <div class="md:col-span-5 zine-card p-6 bg-brandPaper tape-effect">
+                    <div class="text-center mb-4">
+                        <span class="badge-stamp text-sm">PROFIL AGEN INVESTIGASI</span>
+                        <h3 class="text-lg font-extrabold text-brandGreen mt-2">Kartu Tanda Detektif</h3>
+                    </div>
+
+                    <form id="agentForm" onsubmit="event.preventDefault(); saveAgentProfile();" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                <i class="fa-solid fa-user-ninja mr-1 text-brandOrange"></i> Zine Ini Milik (Nama/Alias)
+                            </label>
+                            <input type="text" id="agentName" placeholder="Contoh: Detektif Agi" required class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen focus:ring-2 focus:ring-brandOrange outline-none font-medium text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                <i class="fa-solid fa-users mr-1 text-brandGreen"></i> Kelompok / Tim
+                            </label>
+                            <input type="text" id="agentGroup" placeholder="Contoh: Tim Kompos Hijau #3" required class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen focus:ring-2 focus:ring-brandOrange outline-none font-medium text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                <i class="fa-solid fa-calendar-day mr-1 text-amber-600"></i> Tanggal Misi
+                            </label>
+                            <input type="date" id="agentDate" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen focus:ring-2 focus:ring-brandOrange outline-none font-medium text-sm">
+                        </div>
+
+                        <button type="submit" class="w-full py-3 bg-brandGreen hover:bg-brandLightGreen text-white font-extrabold text-sm rounded-xl border-2 border-brandGreen shadow-md flex items-center justify-center gap-2 transition-transform active:scale-95">
+                            <span>Mulai Investigasi TKP #1</span> <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-tkp1" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <!-- Left Input Panel -->
+                <div class="md:col-span-7 zine-card p-6 bg-brandPaper">
+                    <div class="flex items-center justify-between border-b-2 border-slate-200 pb-3 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-brandGreen text-amber-300 font-extrabold px-3 py-1 rounded-lg text-sm">TKP #1</span>
+                            <h3 class="text-xl font-extrabold text-brandGreen">Ember Jaib (Kompos)</h3>
+                        </div>
+                    </div>
+
+                    <p class="font-hand text-xl text-brandOrange font-bold mb-4">
+                        "Sampah dapur bisa jadi tanah subur, tinggal disusun berlapis!"
+                    </p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                🥦 Jenis Sampah Organik yang Aku Olah Hari Ini:
+                            </label>
+                            <input type="text" id="tkp1_type" placeholder="Contoh: Kulit pisang, sisa sayuran, ampas kopi" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-medium">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                    ⚖️ Berat Sampah Organik (Gram):
+                                </label>
+                                <input type="number" id="tkp1_grams" min="0" placeholder="0" oninput="calculateTKP1()" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-bold text-brandGreen">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                    👃 Bau Kompos Ember:
+                                </label>
+                                <select id="tkp1_smell" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-medium bg-white">
+                                    <option value="" disabled selected>-- Pilih Bau Kompos --</option>
+                                    <option value="tanah">Seperti Tanah (Bagus!)</option>
+                                    <option value="tidak_berbau">Tidak Berbau (Aman)</option>
+                                    <option value="busuk">Busuk (Perlu Kering/Cokelat)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                🥞 Urutan Lapisan Komposku:
+                            </label>
+                            <div class="grid grid-cols-3 gap-2 text-xs font-semibold text-center">
+                                <div class="bg-amber-100 p-2 rounded-lg border border-amber-300">
+                                    1. Tanah/Kompos Matang (Dasar)
+                                </div>
+                                <div class="bg-emerald-100 p-2 rounded-lg border border-emerald-300">
+                                    2. Sampah Basah (Hijau)
+                                </div>
+                                <div class="bg-amber-200 p-2 rounded-lg border border-amber-400">
+                                    3. Dedaunan Kering (Cokelat)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                ⏳ Estimasi Butuh Waktu (Minggu Sampai Jadi Tanah):
+                            </label>
+                            <input type="number" id="tkp1_weeks" value="4" min="1" max="12" class="w-24 px-3 py-1.5 rounded-xl border-2 border-brandGreen text-sm font-bold text-center">
+                            <span class="text-xs text-slate-500 ml-2">Minggu</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-between items-center">
+                        <button onclick="switchTab('tab-cover')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-xl text-xs font-bold">
+                            ⬅️ Kembali
+                        </button>
+                        <button onclick="saveTKP1(); switchTab('tab-tkp2');" class="px-5 py-2.5 bg-brandOrange hover:bg-brandLightOrange text-white rounded-xl text-xs font-black border border-brandGreen shadow">
+                            Simpan & Ke TKP #2 ➡️
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Calculation Impact Card -->
+                <div class="md:col-span-5 space-y-4">
+                    <div class="zine-card p-6 bg-emerald-50 border-emerald-800">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-leaf text-emerald-700 text-xl"></i>
+                            <h4 class="font-extrabold text-emerald-900 text-base">Reduksi Emisi Metana (TKP #1)</h4>
+                        </div>
+                        <p class="text-xs text-emerald-800 mb-4">
+                            Mencegah sampah organik membusuk anaerob di TPA (Tempat Pemrosesan Akhir) yang menghasilkan CH₄ (Metana).
+                        </p>
+
+                        <div class="bg-white p-4 rounded-xl border-2 border-emerald-700 text-center mb-3">
+                            <span class="block text-xs uppercase font-bold text-slate-500">Estimasi Emisi Yang Dicegah</span>
+                            <span id="tkp1_reduction_display" class="text-3xl font-black text-emerald-700">0.00</span>
+                            <span class="text-xs font-bold text-emerald-900">kg CO₂e</span>
+                        </div>
+
+                        <div class="text-[11px] bg-emerald-100/80 p-2.5 rounded-lg border border-emerald-300 text-emerald-900 font-mono">
+                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (IPCC 2006):</strong> 0.58 kg CO₂e / kg sampah organik terolah tanpa landfill.
+                        </div>
+                    </div>
+
+                    <!-- Visual Layering Indicator -->
+                    <div class="zine-card p-4 bg-amber-50">
+                        <h5 class="text-xs font-bold text-slate-700 uppercase mb-2 text-center">Simulasi Lapisan Ember Kompos</h5>
+                        <div class="space-y-1.5 font-mono text-xs text-center font-bold">
+                            <div class="bg-amber-800 text-white p-2 rounded-lg">🤎 Lapisan Cokelat (Dedaunan/Sekam)</div>
+                            <div id="visualOrganicLayer" class="bg-emerald-600 text-white p-2 rounded-lg transition-all">🥦 Lapisan Basah (<span id="layerWeightText">0</span>g Sampah)</div>
+                            <div class="bg-amber-900 text-white p-2 rounded-lg">🤎 Dasar Tanah / Kompos Matang</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-tkp2" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <!-- Left Input Panel -->
+                <div class="md:col-span-7 zine-card p-6 bg-brandPaper">
+                    <div class="flex items-center justify-between border-b-2 border-slate-200 pb-3 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-brandGreen text-amber-300 font-extrabold px-3 py-1 rounded-lg text-sm">TKP #2</span>
+                            <h3 class="text-xl font-extrabold text-brandGreen">Ramuan Jaib (Biowash)</h3>
+                        </div>
+                    </div>
+
+                    <p class="font-hand text-xl text-brandOrange font-bold mb-4">
+                        "Kulit buah dan sayur, disulap jadi cairan pembersih alami!"
+                    </p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                🍊 Bahan Organik yang Aku Olah Jadi Biowash:
+                            </label>
+                            <input type="text" id="tkp2_type" placeholder="Contoh: Kulit jeruk, kulit nanas, kulit apel" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-medium">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                ⚖️ Berat Sisa Organik yang Aku Timbang (Gram):
+                            </label>
+                            <input type="number" id="tkp2_grams" min="0" placeholder="0" oninput="calculateTKP2()" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-bold text-brandGreen">
+                        </div>
+
+                        <!-- Formula Ratio Box -->
+                        <div class="bg-amber-50 p-3 rounded-xl border-2 border-amber-300">
+                            <span class="block text-xs font-extrabold text-amber-900 mb-1">📐 Rasio Formula Biowash (Air : Aktivator : Organik):</span>
+                            <div class="grid grid-cols-3 gap-2 text-center font-mono text-xs font-black text-slate-800">
+                                <div class="bg-white p-2 rounded border border-amber-200">
+                                    Air: <span id="ratioAir">0</span> ml
+                                </div>
+                                <div class="bg-white p-2 rounded border border-amber-200">
+                                    Gula/Molase: <span id="ratioGula">0</span> g
+                                </div>
+                                <div class="bg-emerald-100 p-2 rounded border border-emerald-300 text-emerald-900">
+                                    Bahan: <span id="ratioBahan">0</span> g
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-amber-800 mt-1 font-medium">*Formula standar Eco-Enzyme: 10 bagian Air : 1 bagian Molase/Gula Merah : 3 bagian Kulit Buah/Sayur</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-2">
+                                🧽 Rencana Pakai Biowash-ku Untuk:
+                            </label>
+                            <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+                                <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer hover:bg-slate-50">
+                                    <input type="checkbox" name="biowash_use" value="Cuci Piring" class="accent-brandOrange"> Cuci Piring
+                                </label>
+                                <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer hover:bg-slate-50">
+                                    <input type="checkbox" name="biowash_use" value="Pel Lantai" class="accent-brandOrange"> Pel Lantai
+                                </label>
+                                <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer hover:bg-slate-50">
+                                    <input type="checkbox" name="biowash_use" value="Semprotan Hama" class="accent-brandOrange"> Semprotan Hama
+                                </label>
+                                <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer hover:bg-slate-50">
+                                    <input type="checkbox" name="biowash_use" value="Lainnya" class="accent-brandOrange"> Pembersih Kaca / Lainnya
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-between items-center">
+                        <button onclick="switchTab('tab-tkp1')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-xl text-xs font-bold">
+                            ⬅️ Ke TKP #1
+                        </button>
+                        <button onclick="saveTKP2(); switchTab('tab-tkp3');" class="px-5 py-2.5 bg-brandOrange hover:bg-brandLightOrange text-white rounded-xl text-xs font-black border border-brandGreen shadow">
+                            Simpan & Ke TKP #3 ➡️
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Calculation Impact Card -->
+                <div class="md:col-span-5 space-y-4">
+                    <div class="zine-card p-6 bg-cyan-50 border-cyan-800">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-flask text-cyan-700 text-xl"></i>
+                            <h4 class="font-extrabold text-cyan-900 text-base">Penghematan Karbon Biowash</h4>
+                        </div>
+                        <p class="text-xs text-cyan-800 mb-4">
+                            Pengolahan fermentasi kulit buah menggantikan pembersih kimia sintetik berbasis minyak bumi & menghindari emisi TPA.
+                        </p>
+
+                        <div class="bg-white p-4 rounded-xl border-2 border-cyan-700 text-center mb-3">
+                            <span class="block text-xs uppercase font-bold text-slate-500">Estimasi Emisi Yang Dicegah</span>
+                            <span id="tkp2_reduction_display" class="text-3xl font-black text-cyan-700">0.00</span>
+                            <span class="text-xs font-bold text-cyan-900">kg CO₂e</span>
+                        </div>
+
+                        <div class="text-[11px] bg-cyan-100/80 p-2.5 rounded-lg border border-cyan-300 text-cyan-900 font-mono">
+                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (Subramaniam et al. & IPCC):</strong> ~0.62 kg CO₂e / kg sisa buah yang difermentasi biowash.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-tkp3" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <!-- Left Input Panel -->
+                <div class="md:col-span-7 zine-card p-6 bg-brandPaper">
+                    <div class="flex items-center justify-between border-b-2 border-slate-200 pb-3 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-brandGreen text-amber-300 font-extrabold px-3 py-1 rounded-lg text-sm">TKP #3</span>
+                            <h3 class="text-xl font-extrabold text-brandGreen">Sulap Sampah (Plastik)</h3>
+                        </div>
+                    </div>
+
+                    <p class="font-hand text-xl text-brandOrange font-bold mb-4">
+                        "Sampah plastik nggak harus berakhir di TPA. Yuk disetrika jadi barang baru!"
+                    </p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                🛍️ Jenis Sampah Plastik yang Aku Olah:
+                            </label>
+                            <input type="text" id="tkp3_type" placeholder="Contoh: Plastik kresek LDPE, bungkus kemasan snack" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-medium">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                    👛 Barang yang Ingin Dibuat:
+                                </label>
+                                <select id="tkp3_item_type" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-medium bg-white">
+                                    <option value="" disabled selected>-- Pilih Barang --</option>
+                                    <option value="Dompet">Dompet Kecil</option>
+                                    <option value="Tas">Tas Belanja / Totebag</option>
+                                    <option value="Pouch">Pouch / Tempat Pensil</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                    📄 Lembar Plastik yang Digunakan:
+                                </label>
+                                <input type="number" id="tkp3_sheets" min="0" placeholder="0" oninput="calculateTKP3()" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-bold text-brandGreen">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                😲 Satu Hal yang Bikin Aku Kaget Soal Sampah Plastik Hari Ini:
+                            </label>
+
+                            <textarea id="tkp3_shock" rows="3" placeholder="Contoh: Ternyata 1 dompet kecil butuh hingga 15-20 lembar plastik kresek dan butuh ratusan tahun untuk terurai di alam!" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-medium"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-between items-center">
+                        <button onclick="switchTab('tab-tkp2')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-xl text-xs font-bold">
+                            ⬅️ Ke TKP #2
+                        </button>
+                        <button onclick="saveTKP3(); switchTab('tab-tkp4');" class="px-5 py-2.5 bg-brandOrange hover:bg-brandLightOrange text-white rounded-xl text-xs font-black border border-brandGreen shadow">
+                            Simpan & Ke TKP #4 ➡️
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Calculation Impact Card -->
+                <div class="md:col-span-5 space-y-4">
+                    <div class="zine-card p-6 bg-purple-50 border-purple-800">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-recycle text-purple-700 text-xl"></i>
+                            <h4 class="font-extrabold text-purple-900 text-base">Reduksi Daur Ulang Plastik</h4>
+                        </div>
+                        <p class="text-xs text-purple-800 mb-4">
+                            Mencegah open burning (pembakaran sampah liar) & menghemat pembuatan bijih plastik virgin baru.
+                        </p>
+
+                        <div class="bg-white p-4 rounded-xl border-2 border-purple-700 text-center mb-3">
+                            <span class="block text-xs uppercase font-bold text-slate-500">Estimasi Emisi Yang Dicegah</span>
+                            <span id="tkp3_reduction_display" class="text-3xl font-black text-purple-700">0.00</span>
+                            <span class="text-xs font-bold text-purple-900">kg CO₂e</span>
+                        </div>
+
+                        <div class="text-[11px] bg-purple-100/80 p-2.5 rounded-lg border border-purple-300 text-purple-900 font-mono">
+                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (Ecoinvent v3.8):</strong> ~1.85 kg CO₂e / kg plastik yang didaur ulang (atau ~0.025 kg CO₂e per lembar kresek).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-tkp4" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <!-- Left Input Panel -->
+                <div class="md:col-span-7 zine-card p-6 bg-brandPaper">
+                    <div class="flex items-center justify-between border-b-2 border-slate-200 pb-3 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-brandGreen text-amber-300 font-extrabold px-3 py-1 rounded-lg text-sm">TKP #4</span>
+                            <h3 class="text-xl font-extrabold text-brandGreen">Detektif Jejak Karbon</h3>
+                        </div>
+                    </div>
+
+                    <p class="font-hand text-xl text-brandOrange font-bold mb-4">
+                        "Sejauh mana aku 'nyelametin' bumi hari ini?"
+                    </p>
+
+                    <div class="space-y-4">
+                        <!-- Vehicle Transport Selection -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                    🛵 Aku Ke Sini Naik:
+                                </label>
+                                <select id="tkp4_mode" onchange="calculateTKP4()" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-medium bg-white">
+                                    <option value="" disabled selected>-- Pilih Mode Transportasi --</option>
+                                    <option value="motor">Sepeda Motor (Bensin)</option>
+                                    <option value="mobil">Mobil Pribadi (Bensin/MPV)</option>
+                                    <option value="bus">Bus Umum / Angkot</option>
+                                    <option value="krl">KRL / Kereta Api</option>
+                                    <option value="ev">Kendaraan Listrik (EV)</option>
+                                    <option value="jalan_sepeda">Jalan Kaki / Sepeda Non-Motor</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                    📍 Jarak Tempuh Perjalanan (KM):
+                                </label>
+                                <input type="number" id="tkp4_km" min="0" placeholder="0" oninput="calculateTKP4()" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-bold text-brandGreen">
+                            </div>
+                        </div>
+
+                        <!-- Electricity / Energy Optional Input -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+                                ⚡ Konsumsi Listrik Harian Rumah (kWh) [Opsional]:
+                            </label>
+                            <input type="number" id="tkp4_kwh" min="0" placeholder="Contoh: 5 kWh" oninput="calculateTKP4()" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen text-sm font-medium">
+                        </div>
+
+                        <!-- Prediction Hypothesis Game -->
+                        <div class="bg-amber-50 p-4 rounded-xl border-2 border-amber-300">
+                            <h5 class="text-xs font-black uppercase text-amber-900 mb-2">🔍 Dugaanku (Hipotesis Detektif):</h5>
+                            <div class="space-y-2">
+                                <label class="block text-xs font-bold text-slate-700">Menurutku sumber emisi terbesarku hari ini adalah:</label>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold">
+                                    <label class="flex items-center gap-1.5 bg-white p-2 rounded-lg border border-amber-300 cursor-pointer">
+                                        <input type="radio" name="prediction_source" value="Perjalanan" onchange="calculateTKP4()" class="accent-brandOrange"> Perjalanan
+                                    </label>
+                                    <label class="flex items-center gap-1.5 bg-white p-2 rounded-lg border border-amber-300 cursor-pointer">
+                                        <input type="radio" name="prediction_source" value="Listrik" onchange="calculateTKP4()" class="accent-brandOrange"> Listrik
+                                    </label>
+                                    <label class="flex items-center gap-1.5 bg-white p-2 rounded-lg border border-amber-300 cursor-pointer">
+                                        <input type="radio" name="prediction_source" value="Sampah" onchange="calculateTKP4()" class="accent-brandOrange"> Sampah
+                                    </label>
+                                    <label class="flex items-center gap-1.5 bg-white p-2 rounded-lg border border-amber-300 cursor-pointer">
+                                        <input type="radio" name="prediction_source" value="Makanan" onchange="calculateTKP4()" class="accent-brandOrange"> Makanan
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-between items-center">
+                        <button onclick="switchTab('tab-tkp3')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-xl text-xs font-bold">
+                            ⬅️ Ke TKP #3
+                        </button>
+                        <button onclick="saveTKP4(); switchTab('tab-report');" class="px-5 py-2.5 bg-brandOrange hover:bg-brandLightOrange text-white rounded-xl text-xs font-black border border-brandGreen shadow">
+                            Lihat Hasil Laporan Akhir ➡️
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Calculation Impact Card -->
+                <div class="md:col-span-5 space-y-4">
+                    <div class="zine-card p-6 bg-red-50 border-red-800">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-car-side text-red-700 text-xl"></i>
+                            <h4 class="font-extrabold text-red-900 text-base">Jejak Emisi Perjalanan & Energi</h4>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border-2 border-red-700 text-center mb-3">
+                            <span class="block text-xs uppercase font-bold text-slate-500">Total Emisi Dihasilkan</span>
+                            <span id="tkp4_emission_display" class="text-3xl font-black text-red-700">0.00</span>
+                            <span class="text-xs font-bold text-red-900">kg CO₂e</span>
+                        </div>
+
+                        <!-- Analysis Hypothesis Verification -->
+                        <div id="hypothesisResultBox" class="bg-white p-3 rounded-xl border border-red-300 text-xs space-y-1">
+                            <div class="font-bold text-slate-700">TERNYATA...</div>
+                            <div class="text-slate-800">
+                                Dugaanku: <span id="hypoPredicted" class="font-bold text-brandOrange">-</span>
+                            </div>
+                            <div class="text-slate-800">
+                                Sumber Emisi Terbesar: <span id="hypoActual" class="font-bold text-red-700">-</span>
+                            </div>
+                            <div class="mt-2 font-black text-center text-sm" id="hypoVerdict">
+                                <!-- Benar / Salah / Jauh Bingit -->
+                            </div>
+                        </div>
+
+                        <div class="mt-3 text-[11px] bg-red-100/80 p-2.5 rounded-lg border border-red-300 text-red-900 font-mono">
+                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (KLHK & WRI Indo):</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-0.5">
+                                <li>Motor: 0.088 kg CO₂e/km</li>
+                                <li>Mobil: 0.192 kg CO₂e/km</li>
+                                <li>Bus Umum: 0.045 kg CO₂e/km</li>
+                                <li>Listrik PLN: 0.85 kg CO₂e/kWh</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-report" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <!-- Reflection Form (Left) -->
+                <div class="md:col-span-5 space-y-4">
+                    <div class="zine-card p-6 bg-brandPaper">
+                        <div class="flex items-center gap-2 border-b-2 border-slate-200 pb-3 mb-4">
+                            <span class="bg-brandOrange text-white font-extrabold px-3 py-1 rounded-lg text-sm">TKP #5</span>
+                            <h3 class="text-xl font-extrabold text-brandGreen">Refleksi & Komitmen</h3>
+                        </div>
+
+                        <div class="space-y-4 text-xs font-medium">
+                            <div>
+                                <label class="block font-bold text-slate-700 uppercase mb-1">
+                                    ⭐ TKP yang paling ngena buat aku:
+                                </label>
+                                <select id="tkp_favorite" onchange="updateReportCard()" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen bg-white font-bold text-slate-800">
+                                    <option value="" disabled selected>-- Pilih TKP Favoritmu --</option>
+                                    <option value="TKP #1 Ember Jaib (Pengomposan)">TKP #1 Ember Jaib (Pengomposan)</option>
+                                    <option value="TKP #2 Ramuan Jaib (Biowash)">TKP #2 Ramuan Jaib (Biowash)</option>
+                                    <option value="TKP #3 Sulap Sampah (Plastik)">TKP #3 Sulap Sampah (Plastik)</option>
+                                    <option value="TKP #4 Detektif Jejak Karbon">TKP #4 Detektif Jejak Karbon</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block font-bold text-slate-700 uppercase mb-1">
+                                    💡 Karena:
+                                </label>
+                                <textarea id="tkp_favorite_reason" rows="2" placeholder="Tulis alasanmu di sini..." class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block font-bold text-slate-700 uppercase mb-1">
+                                    🤔 Aku kira... Ternyata...
+                                </label>
+                                <textarea id="tkp_realization" rows="2" placeholder="Aku kira mengompos susah, ternyata tinggal susun berlapis!" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block font-bold text-slate-700 uppercase mb-1">
+                                    🔥 Hari ini aku berani (Micro Commitment):
+                                </label>
+                                <input type="text" id="tkp_commitment" oninput="updateReportCard()" placeholder="Contoh: Berani pilah sampah dapur dari rumah!" class="w-full px-3 py-2 rounded-xl border-2 border-brandGreen font-bold text-brandOrange">
+                            </div>
+
+                            <button onclick="updateReportCard()" class="w-full py-2.5 bg-brandGreen hover:bg-brandLightGreen text-white rounded-xl font-extrabold text-xs shadow border border-brandGreen">
+                                🔄 Perbarui Tampilan Laporan
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Open Scientific References Modal Button -->
+                    <button onclick="openScientificModal()" class="w-full zine-card p-4 bg-amber-100 hover:bg-amber-200 text-amber-950 flex items-center justify-between font-bold text-xs">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-lg text-brandOrange"></i>
+                            <span>Daftar Referensi Jurnal & Metodologi Emission Factor</span>
+                        </span>
+                        <i class="fa-solid fa-circle-info"></i>
+                    </button>
+                </div>
+
+                <div class="md:col-span-7 space-y-4">
+                    <div id="reportPosterCard" class="bg-[#fffef9] border-4 border-[#1e3a2b] p-6 rounded-2xl shadow-xl relative text-slate-800 overflow-hidden">
+                        <!-- Poster Header -->
+                        <div class="flex items-center justify-between border-b-2 border-[#1e3a2b] pb-4 mb-4">
+                            <div>
+                                <div class="bg-[#d9532f] text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded inline-block uppercase tracking-wider mb-1">
+                                    LAPORAN AKHIR INVESTIGASI HIJAU
+                                </div>
+                                <h3 class="text-xl font-extrabold text-[#1e3a2b]">Arta Saloka x Akademi Kompos</h3>
+                                <p class="text-xs font-semibold text-slate-600">Green Impact Journey #1</p>
+                            </div>
+                            
+                            <!-- SCORE WRAPPER: Disembunyikan di Interface UI Web, Ditampilkan Hanya Saat Diunduh sebagai Poster Gambar -->
+                            <div id="posterScoreBox" class="hidden text-right bg-amber-100 px-3 py-1.5 rounded-xl border-2 border-[#1e3a2b]">
+                                <div class="text-xl font-black text-[#d9532f]" id="posterScore">0 / 22</div>
+                                <div class="text-[9px] uppercase font-bold text-slate-600">Total Skor Green</div>
+                            </div>
+                        </div>
+
+                        <!-- Agent Metadata Grid -->
+                        <div class="grid grid-cols-3 gap-2 text-xs font-mono bg-[#f7f4eb] p-3 rounded-xl border border-[#1e3a2b] mb-4">
+                            <div>
+                                <span class="block text-[10px] text-slate-500 uppercase font-sans">Agen:</span>
+                                <strong id="posterAgentName" class="text-[#1e3a2b]">Detektif Agi</strong>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 uppercase font-sans">Kelompok:</span>
+                                <strong id="posterAgentGroup" class="text-[#1e3a2b]">Tim Hijau #1</strong>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 uppercase font-sans">Tanggal:</span>
+                                <strong id="posterAgentDate" class="text-[#1e3a2b]">2026-08-21</strong>
+                            </div>
+                        </div>
+
+                        <!-- Carbon Balance Summary Box (Dimodifikasi: 2 Kolom tanpa Net Karbon Impact) -->
+                        <div class="grid grid-cols-2 gap-3 mb-4 text-center">
+                            <div class="bg-red-50 p-2.5 rounded-xl border border-red-300">
+                                <span class="block text-[10px] font-bold text-red-700 uppercase">Emisi Transport</span>
+                                <span id="posterEmitted" class="text-lg font-black text-red-700">0.00</span>
+                                <span class="text-[10px] text-slate-500 block">kg CO₂e</span>
+                            </div>
+
+                            <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-300">
+                                <span class="block text-[10px] font-bold text-emerald-700 uppercase">Emisi Dicegah</span>
+                                <span id="posterAvoided" class="text-lg font-black text-emerald-700">0.00</span>
+                                <span class="text-[10px] text-slate-500 block">kg CO₂e</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Highlights -->
+                        <div class="space-y-2 text-xs mb-4">
+                            <div class="flex justify-between p-2 bg-slate-50 rounded-lg border border-slate-200">
+                                <span>🌱 <strong>Kompos Organic (TKP #1):</strong></span>
+                                <span id="posterTkp1Details" class="font-bold">0g (~0.00 kg CO₂e)</span>
+                            </div>
+                            <div class="flex justify-between p-2 bg-slate-50 rounded-lg border border-slate-200">
+                                <span>🧪 <strong>Biowash Enzyme (TKP #2):</strong></span>
+                                <span id="posterTkp2Details" class="font-bold">0g (~0.00 kg CO₂e)</span>
+                            </div>
+                            <div class="flex justify-between p-2 bg-slate-50 rounded-lg border border-slate-200">
+                                <span>♻️ <strong>Upcycle Plastik (TKP #3):</strong></span>
+                                <span id="posterTkp3Details" class="font-bold">0 lembar (~0.00 kg CO₂e)</span>
+                            </div>
+                        </div>
+
+                        <!-- Reflection Quote Card -->
+                        <div class="bg-amber-50 p-3 rounded-xl border-2 border-dashed border-[#1e3a2b] mb-4">
+                            <div class="font-hand text-base text-[#d9532f] font-bold">
+                                "Hari ini aku berani: <span id="posterCommitment" class="underline">Mulai pilah sampah dari dapur!</span>"
+                            </div>
+                            <div class="text-[11px] text-slate-600 mt-1 italic">
+                                TKP Favorit: <span id="posterFavTkp" class="font-bold text-[#1e3a2b]">TKP #1 Ember Jaib</span>
+                            </div>
+                        </div>
+
+                        <!-- Poster Footer Tags & Branding -->
+                        <div class="flex items-center justify-between text-[10px] font-mono border-t border-slate-300 pt-3 text-slate-500">
+                            <div>
+                                Tag @artasaloka @banksampahakkom @carbonacademy.id @carbonaddons.id
+                            </div>
+                            <div class="font-bold text-[#1e3a2b]">
+                                #PamerkanTemuanmu 📸
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export Actions Bar -->
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="downloadPosterImage()" class="flex-1 py-3 bg-brandOrange hover:bg-brandLightOrange text-white rounded-xl font-extrabold text-sm border-2 border-brandGreen shadow-md flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-download"></i> Unduh Poster Laporan (PNG)
+                        </button>
+                        <button onclick="copyShareText()" class="py-3 px-5 bg-brandGreen hover:bg-brandLightGreen text-white rounded-xl font-extrabold text-sm border-2 border-brandGreen shadow-md flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-copy"></i> Salin Teks Story
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="scientificModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-brandPaper max-w-2xl w-full p-6 rounded-2xl border-4 border-brandGreen shadow-2xl max-h-[85vh] overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center border-b-2 border-slate-200 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-book-journal-whills text-brandOrange text-2xl"></i>
+                    <h3 class="text-xl font-extrabold text-brandGreen">Metodologi & Jurnal Referensi Faktor Emisi</h3>
+                </div>
+                <button onclick="closeScientificModal()" class="w-8 h-8 rounded-full bg-slate-200 text-slate-700 font-bold hover:bg-slate-300">✕</button>
+            </div>
+
+            <div class="text-xs text-slate-700 space-y-3 leading-relaxed">
+                <p class="font-bold text-sm text-brandOrange">
+                    Perhitungan dalam aplikasi ini mengacu pada standar metodologi persampahan dan transportasi nasional & internasional:
+                </p>
+
+                <!-- Ref 1 -->
+                <div class="p-3 bg-amber-50 rounded-xl border border-amber-300">
+                    <strong class="text-slate-900 block mb-1">1. Pengomposan Sampah Organik (TKP #1)</strong>
+                    <p class="mb-1"><strong>Faktor Reduksi:</strong> 0.58 kg CO₂e / kg sampah organik terolah.</p>
+                    <p class="text-[11px] text-slate-600"><strong>Referensi Jurnal:</strong> IPCC (2006/2019) Guidelines for National Greenhouse Gas Inventories - Vol 5 Waste (Biological Treatment of Solid Waste). Mengurangi generasi gas metana (CH₄) anaerob di TPA Winongo & Ulee Kareng (Jurnal Sumberdaya Alam & Lingkungan, UB; Jurnal Teknik Sipil USK).</p>
+                </div>
+
+                <!-- Ref 2 -->
+                <div class="p-3 bg-cyan-50 rounded-xl border border-cyan-300">
+                    <strong class="text-slate-900 block mb-1">2. Pembuatan Biowash / Eco-Enzyme (TKP #2)</strong>
+                    <p class="mb-1"><strong>Faktor Reduksi:</strong> 0.62 kg CO₂e / kg sisa kulit buah.</p>
+                    <p class="text-[11px] text-slate-600"><strong>Referensi Jurnal:</strong> Subramaniam et al. (2021) "Life Cycle Assessment of Fruit Waste Valorization to Eco-Enzyme Surfactants"; Kementerian Lingkungan Hidup dan Kehutanan (KLHK) RI Pedoman Penghitungan Emisi Pengelolaan Biologis.</p>
+                </div>
+
+                <!-- Ref 3 -->
+                <div class="p-3 bg-purple-50 rounded-xl border border-purple-300">
+                    <strong class="text-slate-900 block mb-1">3. Upcycling & Daur Ulang Plastik (TKP #3)</strong>
+                    <p class="mb-1"><strong>Faktor Reduksi:</strong> 1.85 kg CO₂e / kg plastik (~0.025 kg CO₂e / lembar kresek).</p>
+                    <p class="text-[11px] text-slate-600"><strong>Referensi Jurnal:</strong> Ecoinvent Database v3.8 (Low-Density Polyethylene Recycling Offset); World Bank / GAIA Assessment on Open Burning Plastic Emission Avoidance in SE Asia.</p>
+                </div>
+
+                <!-- Ref 4 -->
+                <div class="p-3 bg-red-50 rounded-xl border border-red-300">
+                    <strong class="text-slate-900 block mb-1">4. Emisi Transportasi & Energi Listrik (TKP #4)</strong>
+                    <p class="mb-1"><strong>Faktor Emisi:</strong> Motor (0.088 kg CO₂e/km), Mobil (0.192 kg CO₂e/km), Bus (0.045 kg CO₂e/km), Listrik PLN (0.85 kg CO₂e/kWh).</p>
+                    <p class="text-[11px] text-slate-600"><strong>Referensi:</strong> Pedoman Rencana Aksi Daerah Penurunan GRK Sektor Transportasi KLHK RI & WRI Indonesia (2021); BPPT Transport Emission Factor Baseline.</p>
+                </div>
+            </div>
+
+            <div class="pt-2 text-right">
+                <button onclick="closeScientificModal()" class="px-5 py-2 bg-brandGreen text-white rounded-xl font-bold text-xs">
+                    Mengerti & Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-brandGreen text-brandCream text-center py-4 px-4 border-t-2 border-brandGreen mt-10">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
+            <div>
+                <strong>Arta Saloka x Akademi Kompos</strong> • Green Impact Journey #1
+            </div>
+            <div class="font-hand text-base text-amber-300 font-bold">
+                "Detektif Karbon Hari Ini, Penyelamat Bumi Masa Depan!"
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const appState = {
+            agentName: 'Detektif Agi',
+            agentGroup: 'Tim Kompos Hijau',
+            agentDate: new Date().toISOString().split('T')[0],
+            
+            // TKP 1: Kompos
+            tkp1: {
+                type: '',
+                grams: 0,
+                smell: '',
+                weeks: 4,
+                avoidedEmissions: 0,
+                score: 0
+            },
+
+            // TKP 2: Biowash
+            tkp2: {
+                type: '',
+                grams: 0,
+                uses: [],
+                avoidedEmissions: 0,
+                score: 0
+            },
+
+            // TKP 3: Upcycle Plastic
+            tkp3: {
+                type: '',
+                item: '',
+                sheets: 0,
+                shockText: '',
+                avoidedEmissions: 0,
+                score: 0
+            },
+
+            // TKP 4: Transport & Footprint
+            tkp4: {
+                mode: '',
+                km: 0,
+                kwh: 0,
+                predictedSource: '',
+                actualEmissions: 0,
+                score: 0
+            },
+
+            // TKP 5: Reflection & Commitments
+            tkp5: {
+                favoriteTkp: '',
+                favoriteReason: '',
+                realization: '',
+                commitment: 'Mulai pilah sampah dari dapur rumah!',
+                score: 5
+            }
+        };
+
+        // CUSTOM TOAST NOTIFICATION
+        let toastTimeout;
+        function showToast(message, icon = '✨') {
+            const toastEl = document.getElementById('toastNotification');
+            const msgEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+
+            if (!toastEl || !msgEl || !iconEl) return;
+
+            msgEl.innerText = message;
+            iconEl.innerText = icon;
+
+            toastEl.classList.remove('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
+            toastEl.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toastEl.classList.add('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
+                toastEl.classList.remove('translate-y-0', 'opacity-100');
+            }, 3500);
+        }
+
+        window.onload = function() {
+            document.getElementById('agentDate').value = appState.agentDate;
+            calculateScoresInternal();
+            updateReportCard();
+        };
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            
+            const target = document.getElementById(tabId);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('block');
+            }
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-brandOrange', 'text-white', 'shadow');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+
+            const activeNavBtn = document.getElementById('nav-' + tabId);
+            if (activeNavBtn) {
+                activeNavBtn.classList.remove('bg-slate-100', 'text-slate-600');
+                activeNavBtn.classList.add('bg-brandOrange', 'text-white', 'shadow');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function saveAgentProfile() {
+            const name = document.getElementById('agentName').value.trim();
+            const group = document.getElementById('agentGroup').value.trim();
+            const date = document.getElementById('agentDate').value;
+
+            if (name) appState.agentName = name;
+            if (group) appState.agentGroup = group;
+            if (date) appState.agentDate = date;
+
+            updateReportCard();
+            showToast('Profil Detektif Berhasil Disimpan!', '🔎');
+            switchTab('tab-tkp1');
+        }
+
+        function calculateTKP1() {
+            const grams = parseFloat(document.getElementById('tkp1_grams').value) || 0;
+            const kg = grams / 1000;
+            const avoided = kg * 0.58;
+
+            appState.tkp1.grams = grams;
+            appState.tkp1.avoidedEmissions = avoided;
+            appState.tkp1.score = grams > 0 ? 5 : 0;
+
+            document.getElementById('tkp1_reduction_display').innerText = avoided.toFixed(2);
+            document.getElementById('layerWeightText').innerText = grams;
+
+            calculateScoresInternal();
+        }
+
+        function saveTKP1() {
+            appState.tkp1.type = document.getElementById('tkp1_type').value;
+            appState.tkp1.smell = document.getElementById('tkp1_smell').value;
+            appState.tkp1.weeks = parseInt(document.getElementById('tkp1_weeks').value) || 4;
+            updateReportCard();
+        }
+
+        function calculateTKP2() {
+            const grams = parseFloat(document.getElementById('tkp2_grams').value) || 0;
+            
+            const water = Math.round(grams * (10 / 3));
+            const sugar = Math.round(grams / 3);
+
+            document.getElementById('ratioAir').innerText = water;
+            document.getElementById('ratioGula').innerText = sugar;
+            document.getElementById('ratioBahan').innerText = grams;
+
+            const kg = grams / 1000;
+            const avoided = kg * 0.62;
+
+            appState.tkp2.grams = grams;
+            appState.tkp2.avoidedEmissions = avoided;
+            appState.tkp2.score = grams > 0 ? 4 : 0;
+
+            document.getElementById('tkp2_reduction_display').innerText = avoided.toFixed(2);
+            calculateScoresInternal();
+        }
+
+        function saveTKP2() {
+            appState.tkp2.type = document.getElementById('tkp2_type').value;
+            
+            const selectedUses = [];
+            document.querySelectorAll('input[name="biowash_use"]:checked').forEach(chk => {
+                selectedUses.push(chk.value);
+            });
+            appState.tkp2.uses = selectedUses;
+
+            updateReportCard();
+        }
+
+        function calculateTKP3() {
+            const sheets = parseFloat(document.getElementById('tkp3_sheets').value) || 0;
+            const avoided = sheets * 0.025;
+
+            appState.tkp3.sheets = sheets;
+            appState.tkp3.avoidedEmissions = avoided;
+            appState.tkp3.score = sheets > 0 ? 4 : 0;
+
+            document.getElementById('tkp3_reduction_display').innerText = avoided.toFixed(2);
+            calculateScoresInternal();
+        }
+
+        function saveTKP3() {
+            appState.tkp3.type = document.getElementById('tkp3_type').value;
+            appState.tkp3.item = document.getElementById('tkp3_item_type').value;
+            appState.tkp3.shockText = document.getElementById('tkp3_shock').value;
+            updateReportCard();
+        }
+
+        function calculateTKP4() {
+            const mode = document.getElementById('tkp4_mode').value;
+            const km = parseFloat(document.getElementById('tkp4_km').value) || 0;
+            const kwh = parseFloat(document.getElementById('tkp4_kwh').value) || 0;
+
+            const factors = {
+                motor: 0.088,
+                mobil: 0.192,
+                bus: 0.045,
+                krl: 0.035,
+                ev: 0.052,
+                jalan_sepeda: 0.000
+            };
+
+            const transportEmission = km * (factors[mode] || 0);
+            const electricityEmission = kwh * 0.85;
+
+            const totalEmission = transportEmission + electricityEmission;
+
+            appState.tkp4.mode = mode;
+            appState.tkp4.km = km;
+            appState.tkp4.kwh = kwh;
+            appState.tkp4.actualEmissions = totalEmission;
+            appState.tkp4.score = (km > 0 || mode) ? 4 : 0;
+
+            document.getElementById('tkp4_emission_display').innerText = totalEmission.toFixed(2);
+
+            const selectedRadio = document.querySelector('input[name="prediction_source"]:checked');
+            const predicted = selectedRadio ? selectedRadio.value : 'Belum dipilih';
+            appState.tkp4.predictedSource = predicted;
+
+            let actualHighest = 'Perjalanan';
+            if (electricityEmission > transportEmission && electricityEmission > 0) {
+                actualHighest = 'Listrik';
+            }
+
+            document.getElementById('hypoPredicted').innerText = predicted;
+            document.getElementById('hypoActual').innerText = mode ? actualHighest : '-';
+
+            const verdictEl = document.getElementById('hypoVerdict');
+            if (!selectedRadio || !mode) {
+                verdictEl.className = "mt-2 font-black text-center text-xs text-slate-600 bg-slate-100 p-1.5 rounded-lg";
+                verdictEl.innerText = "🔍 Pilih mode transportasi & dugaanku dulu ya!";
+            } else if (predicted === actualHighest) {
+                verdictEl.className = "mt-2 font-black text-center text-sm text-emerald-700 bg-emerald-100 p-1.5 rounded-lg";
+                verdictEl.innerText = "🎉 Dugaanku BENAR!";
+            } else {
+                verdictEl.className = "mt-2 font-black text-center text-sm text-amber-700 bg-amber-100 p-1.5 rounded-lg";
+                verdictEl.innerText = "🕵️ SALAH (Tapi dapet insight baru!)";
+            }
+
+            calculateScoresInternal();
+        }
+
+        function saveTKP4() {
+            calculateTKP4();
+            updateReportCard();
+        }
+
+        function calculateScoresInternal() {
+            const favSelected = document.getElementById('tkp_favorite').value;
+            const commitmentVal = document.getElementById('tkp_commitment').value;
+            appState.tkp5.score = (favSelected && commitmentVal) ? 5 : 3;
+
+            const totalScore = appState.tkp1.score + appState.tkp2.score + appState.tkp3.score + appState.tkp4.score + appState.tkp5.score;
+            
+            // Skor hanya disimpan di memori, dimasukkan ke elemen poster
+            document.getElementById('posterScore').innerText = `${totalScore} / 22`;
+        }
+
+        function updateReportCard() {
+            document.getElementById('posterAgentName').innerText = appState.agentName || 'Detektif Agi';
+            document.getElementById('posterAgentGroup').innerText = appState.agentGroup || 'Tim Hijau';
+            document.getElementById('posterAgentDate').innerText = appState.agentDate || new Date().toISOString().split('T')[0];
+
+            const totalAvoided = appState.tkp1.avoidedEmissions + appState.tkp2.avoidedEmissions + appState.tkp3.avoidedEmissions;
+            const totalEmitted = appState.tkp4.actualEmissions;
+
+            document.getElementById('posterEmitted').innerText = totalEmitted.toFixed(2);
+            document.getElementById('posterAvoided').innerText = totalAvoided.toFixed(2);
+
+            document.getElementById('posterTkp1Details').innerText = `${appState.tkp1.grams}g (~${appState.tkp1.avoidedEmissions.toFixed(2)} kg CO₂e)`;
+            document.getElementById('posterTkp2Details').innerText = `${appState.tkp2.grams}g (~${appState.tkp2.avoidedEmissions.toFixed(2)} kg CO₂e)`;
+            document.getElementById('posterTkp3Details').innerText = `${appState.tkp3.sheets} lembar (~${appState.tkp3.avoidedEmissions.toFixed(2)} kg CO₂e)`;
+
+            const favTkp = document.getElementById('tkp_favorite').value || 'Belum dipilih';
+            const commitment = document.getElementById('tkp_commitment').value || 'Mulai aksi hijau dari diri sendiri!';
+
+            appState.tkp5.favoriteTkp = favTkp;
+            appState.tkp5.commitment = commitment;
+
+            document.getElementById('posterFavTkp').innerText = favTkp;
+            document.getElementById('posterCommitment').innerText = commitment;
+
+            calculateScoresInternal();
+        }
+
+        function downloadPosterImage() {
+            const card = document.getElementById('reportPosterCard');
+            const scoreBox = document.getElementById('posterScoreBox');
+
+            if (typeof html2canvas === 'undefined') {
+                showToast('Library pemproses gambar belum siap. Coba lagi.', '⚠️');
+                return;
+            }
+
+            // Hitung ulang skor sebelum membuat gambar poster
+            calculateScoresInternal();
+
+            // Tampilkan elemen skor secara temporer khusus untuk dirender di file PNG
+            if (scoreBox) {
+                scoreBox.classList.remove('hidden');
+            }
+
+            showToast('Memproses & Mengunduh Poster Laporan...', '📸');
+
+            html2canvas(card, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#fffef9'
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Laporan-Detektif-Karbon-${appState.agentName.replace(/\s+/g, '_')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                // Sembunyikan kembali skor dari interface layar web
+                if (scoreBox) {
+                    scoreBox.classList.add('hidden');
+                }
+                
+                showToast('Poster laporan berhasil diunduh beserta skor kamu!', '🎉');
+            }).catch(err => {
+                if (scoreBox) {
+                    scoreBox.classList.add('hidden');
+                }
+                showToast('Gagal memproses gambar poster.', '⚠️');
+            });
+        }
+
+        function copyShareText() {
+            const totalAvoided = (appState.tkp1.avoidedEmissions + appState.tkp2.avoidedEmissions + appState.tkp3.avoidedEmissions).toFixed(2);
+            const textToCopy = `🔍 LAPORAN DETEKTIF JEJAK KARBON 🔍\n` +
+                `Agen: ${appState.agentName} (${appState.agentGroup})\n` +
+                `🌱 Total Emisi Dicegah: ${totalAvoided} kg CO2e!\n` +
+                `🔥 Komitmenku: "${appState.tkp5.commitment}"\n\n` +
+                `CC: @artasaloka @banksampahakkom @carbonacademy.id @carbonaddons.id\n` +
+                `#GreenImpactJourney #PamerkanTemuanmu #DetektifKarbon`;
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToast("Teks Laporan disalin ke clipboard! Siap dipost 📸", "📋");
+                }).catch(() => {
+                    fallbackCopyText(textToCopy);
+                });
+            } else {
+                fallbackCopyText(textToCopy);
+            }
+        }
+
+        function fallbackCopyText(text) {
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            showToast("Teks Laporan disalin ke clipboard! Siap dipost 📸", "📋");
+        }
+
+        function openScientificModal() {
+            document.getElementById('scientificModal').classList.remove('hidden');
+        }
+
+        function closeScientificModal() {
+            document.getElementById('scientificModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
