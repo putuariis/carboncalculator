@@ -1251,20 +1251,7 @@
             document.body.removeChild(dummy);
 
             alert("Teks Laporan Investigasi berhasil disalin ke clipboard! Siap dipost di Story/Feeds Instagram 📸");
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            const favTkpSelect = document.getElementById('favTkpSelect');
-            const posterFavTkp = document.getElementById('posterFavTkp');
-            
-        if (favTkpSelect && posterFavTkp) {
-            favTkpSelect.addEventListener('change', function() {
-                const selectedValue = this.value;
-
-            // Jika ada nilai yang dipilih, ubah teks di poster
-        if (selectedValue) {
-            posterFavTkp.textContent = selectedValue;
-            }
-        }
+        }   
     }
 });
     </script>
