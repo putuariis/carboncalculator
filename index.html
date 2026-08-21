@@ -128,7 +128,7 @@
             </div>
 
             <!-- Score counter -->
-            <div class="flex items-center gap-3 bg-brandCream px-4 py-1.5 rounded-xl border-2 border-brandGreen shadow-sm">
+            <!--<div class="flex items-center gap-3 bg-brandCream px-4 py-1.5 rounded-xl border-2 border-brandGreen shadow-sm">
                 <div class="text-right">
                     <span class="block text-[10px] uppercase font-bold text-slate-500 tracking-wider">Skor Investigasi</span>
                     <span id="globalScoreText" class="text-lg font-black text-brandOrange">0 / 22</span>
@@ -136,7 +136,7 @@
                 <div class="w-8 h-8 rounded-full bg-amber-400 border border-brandGreen flex items-center justify-center text-brandGreen font-black text-sm">
                     ⭐
                 </div>
-            </div>
+            </div> -->
         </div>
     </header>
 
@@ -749,10 +749,10 @@
                                 <h3 class="text-xl font-extrabold text-[#1e3a2b]">Arta Saloka x Akademi Kompos</h3>
                                 <p class="text-xs font-semibold text-slate-600">Green Impact Journey #1</p>
                             </div>
-                            <div class="text-right">
+                            <!--<div class="text-right">
                                 <div class="text-2xl font-black text-[#d9532f]" id="posterScore">20 / 22</div>
                                 <div class="text-[10px] uppercase font-bold text-slate-500">Total Skor Green</div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <!-- Agent Metadata Grid -->
@@ -1235,7 +1235,7 @@
             const totalAvoided = (appState.tkp1.avoidedEmissions + appState.tkp2.avoidedEmissions + appState.tkp3.avoidedEmissions).toFixed(2);
             const textToCopy = `🔍 LAPORAN DETEKTIF JEJAK KARBON 🔍\n` +
                 `Agen: ${appState.agentName} (${appState.agentGroup})\n` +
-                `⭐ Skor Green Impact: ${document.getElementById('globalScoreText').innerText}\n` +
+                //`⭐ Skor Green Impact: ${document.getElementById('globalScoreText').innerText}\n` +//
                 `🌱 Total Emisi Dicegah: ${totalAvoided} kg CO2e!\n` +
                 `🔥 Komitmenku: "${appState.tkp5.commitment}"\n\n` +
                 `CC: @artasaloka @banksampahakkom @carbonacademy.id @carbonaddons.id\n` +
