@@ -330,7 +330,7 @@
                         </div>
 
                         <div class="text-[11px] bg-emerald-100/80 p-2.5 rounded-lg border border-emerald-300 text-emerald-900 font-mono">
-                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (US EPA WARM v15):</strong> 0.55 kg CO₂e / kg sampah makanan (food waste) terkomposkan.
+                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (US EPA WARM v15):</strong> 0.54 kg CO₂e / kg sampah organik (mix organik) jika dibuang ke landfile. dan 0.13t kg CO₂e/kg jika dikomposkan. Terdapat 0.41 kg CO₂e/ kgo ffset. 
                         </div>
                     </div>
 
@@ -439,7 +439,7 @@
                         </div>
 
                         <div class="text-[11px] bg-cyan-100/80 p-2.5 rounded-lg border border-cyan-300 text-cyan-900 font-mono">
-                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (US EPA Organics Diversion):</strong> 0.61 kg CO₂e / kg sisa buah & sayur yang difaktorkan biowash.
+                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (US EPA Organics Diversion):</strong> 0.28 kg CO₂e / kg emisi dari sisa buah & sayur jika dibuang ke landfile, dan 0.11 kg CO₂e / kg emisi jika dikomposkan deposisi basah.  Faktor emisi biowash belum tersedia secara akurat, estimasi ini menggunakan eco enzim dan pupuk organik buah-buahan.
                         </div>
                     </div>
                 </div>
@@ -526,7 +526,7 @@
                         </div>
 
                         <div class="text-[11px] bg-purple-100/80 p-2.5 rounded-lg border border-purple-300 text-purple-900 font-mono">
-                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (US EPA WARM Recycling):</strong> 1.81 kg CO₂e / kg LDPE plastik (~0.0245 kg CO₂e per lembar kresek).
+                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (US EPA WARM Recycling):</strong> 2.8 kg CO₂e / kg LDPE plastik dihasilkan jika sampah plastik dibakar. ( dengan asumsi 1kg plastik LDPE adalah 100 lembar, maka per lembarnya menghasilkan emisi ~0.0245 kg CO₂e jika dibakar). sedangkan jika dibuat tas, maka carbon pembakaran tidak akan dilepaskan ke atmosfer.
                         </div>
                     </div>
                 </div>
@@ -639,11 +639,12 @@
                         <div class="mt-3 text-[11px] bg-red-100/80 p-2.5 rounded-lg border border-red-300 text-red-900 font-mono">
                             <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi EPA GHG Hub (2024):</strong>
                             <ul class="list-disc list-inside mt-1 space-y-0.5">
-                                <li>Motor Bensin: 0.111 kg CO₂e/km</li>
-                                <li>Mobil Bensin: 0.205 kg CO₂e/km</li>
-                                <li>Bus Umum: 0.055 kg CO₂e/p-km</li>
+                                <li>Motor Bensin: 0.23339 kg CO₂e/km</li>
+                                <li>Mobil Bensin: 0.18558 kg CO₂e/km</li>
+                                <li>Bus Umum: 0.04142 kg CO₂e/p-km</li>
                                 <li>KRL / Commuter: 0.075 kg CO₂e/p-km</li>
                                 <li>Listrik Grid: 0.85 kg CO₂e/kWh</li>
+                                <li>Perlu digarisbawahi baseline yang digunakan adalah standar EPA yang perlu standarisasi khusus di Indonesia</li>
                             </ul>
                         </div>
                     </div>
@@ -996,7 +997,7 @@
             const grams = parseFloat(document.getElementById('tkp1_grams').value) || 0;
             const kg = grams / 1000;
             // EPA WARM v15 Food Waste Composting net avoidance factor: 0.55 kg CO2e / kg
-            const avoided = kg * 0.55;
+            const avoided = kg * 0.41;
 
             appState.tkp1.grams = grams;
             appState.tkp1.avoidedEmissions = avoided;
@@ -1027,7 +1028,7 @@
 
             const kg = grams / 1000;
             // EPA Organics Valorization / Surfactant Offset factor: 0.61 kg CO2e / kg
-            const avoided = kg * 0.61;
+            const avoided = kg * 0.17;
 
             appState.tkp2.grams = grams;
             appState.tkp2.avoidedEmissions = avoided;
@@ -1051,8 +1052,8 @@
 
         function calculateTKP3() {
             const sheets = parseFloat(document.getElementById('tkp3_sheets').value) || 0;
-            // EPA WARM LDPE Recycling factor: 1.81 kg CO2e / kg plastic (~0.0245 kg CO2e / sheet of 13.5g)
-            const avoided = sheets * 0.0245;
+            // EPA WARM LDPE Recycling factor: 2.8 kg CO2e / kg plastic (~0.0245 kg CO2e / sheet of 13.5g)
+            const avoided = sheets * 0.028;
 
             appState.tkp3.sheets = sheets;
             appState.tkp3.avoidedEmissions = avoided;
@@ -1076,9 +1077,9 @@
 
             // EPA GHG Emission Factors Hub (2024) in kg CO2e / km
             const factors = {
-                motor: 0.111,         // EPA Passenger Motorcycle: 0.178 kg CO2e/mile = 0.111 kg CO2e/km
-                mobil: 0.205,         // EPA Passenger Gasoline Car: 0.330 kg CO2e/mile = 0.205 kg CO2e/km
-                bus: 0.055,           // EPA Transit Bus: 0.089 kg CO2e/p-mile = 0.055 kg CO2e/p-km
+                motor: 0.23339,         // EPA Passenger Motorcycle: 0.178 kg CO2e/mile = 0.111 kg CO2e/km
+                mobil: 0.18558,         // EPA Passenger Gasoline Car: 0.330 kg CO2e/mile = 0.205 kg CO2e/km
+                bus: 0.04142,           // EPA Transit Bus: 0.089 kg CO2e/p-mile = 0.055 kg CO2e/p-km
                 krl: 0.075,           // EPA Commuter Rail: 0.121 kg CO2e/p-mile = 0.075 kg CO2e/p-km
                 ev: 0.052,            // EPA Electric Vehicle Average lifecycle
                 jalan_sepeda: 0.000
