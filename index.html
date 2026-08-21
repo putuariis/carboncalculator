@@ -1253,19 +1253,16 @@
             alert("Teks Laporan Investigasi berhasil disalin ke clipboard! Siap dipost di Story/Feeds Instagram 📸");
         }
         document.addEventListener('DOMContentLoaded', function() {
-    // 1. Ambil elemen dropdown dan elemen span poster
-    const favTkpSelect = document.getElementById('favTkpSelect');
-    const posterFavTkp = document.getElementById('posterFavTkp');
-
-    // 2. Pasang pendengar peristiwa 'change' ketika pengguna memilih opsi
-    if (favTkpSelect && posterFavTkp) {
-        favTkpSelect.addEventListener('change', function() {
-            // Ambil nilai yang dipilih
-            const selectedValue = this.value;
+            const favTkpSelect = document.getElementById('favTkpSelect');
+            const posterFavTkp = document.getElementById('posterFavTkp');
+            
+        if (favTkpSelect && posterFavTkp) {
+            favTkpSelect.addEventListener('change', function() {
+                const selectedValue = this.value;
 
             // Jika ada nilai yang dipilih, ubah teks di poster
-            if (selectedValue) {
-                posterFavTkp.textContent = selectedValue;
+        if (selectedValue) {
+            posterFavTkp.textContent = selectedValue;
             }
         });
     }
