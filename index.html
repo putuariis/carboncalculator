@@ -1179,9 +1179,21 @@
 
         // UPDATE SCORE & REPORT CARD
         function updateGlobalScore() {
-            const totalScore = appState.tkp1.score + appState.tkp2.score + appState.tkp3.score + appState.tkp4.score + appState.tkp5.score;
-            document.getElementById('globalScoreText').innerText = `${totalScore} / 22`;
-            document.getElementById('posterScore').innerText = `${totalScore} / 22`;
+            const totalScore =
+            appState.tkp1.score +
+            appState.tkp2.score +
+            appState.tkp3.score +
+            appState.tkp4.score +
+            appState.tkp5.score;
+            
+            const globalScore = document.getElementById('globalScoreText');
+            const posterScore = document.getElementById('posterScore');
+            if (globalScore) {
+                globalScore.innerText = `${totalScore} / 22`;
+            }
+            if (posterScore) {
+                posterScore.innerText = `${totalScore} / 22`;
+            }
         }
 
         function updateReportCard() {
