@@ -525,7 +525,7 @@
                         </div>
 
                         <div class="text-[11px] bg-purple-100/80 p-2.5 rounded-lg border border-purple-300 text-purple-900 font-mono">
-                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (US EPA WARM Recycling):</strong> 2.8 kg CO₂e / kg emisi dihasilkan jika sampah plastik LDPE  dibakar. (dengan asumsi 1kg plastik LDPE adalah 100 lembar, maka per lembarnya menghasilkan emisi ~0.028 kg CO₂e jika dibakar). sedangkan jika dibuat tas, maka carbon pembakaran tidak akan dilepaskan ke atmosfer.
+                            <i class="fa-solid fa-book-bookmark mr-1"></i> <strong>Faktor Emisi (US EPA WARM Recycling):</strong> 2.8 kg CO₂e / kg emisi dihasilkan jika sampah plastik LDPE  dibakar. (dengan asumsi 1kg plastik LDPE adalah 500 lembar, maka per lembarnya menghasilkan emisi ~0.028 kg CO₂e jika dibakar). sedangkan jika dibuat tas, maka carbon pembakaran tidak akan dilepaskan ke atmosfer.
                         </div>
                     </div>
                 </div>
@@ -833,7 +833,7 @@
 
                 <div class="p-3 bg-purple-50 rounded-xl border border-purple-300">
                     <strong class="text-slate-900 block mb-1">3. Upcycling & Daur Ulang Plastik LDPE (TKP #3)</strong>
-                    <p class="mb-1"><strong>Faktor Reduksi EPA:</strong> 1.81 kg CO₂e / kg plastik (~0.0245 kg CO₂e / lembar kresek 13.5 gram).</p>
+                    <p class="mb-1"><strong>Faktor Reduksi EPA:</strong> 2.8 kg CO₂e / kg plastik (~0.0245 kg CO₂e / lembar kresek 13.5 gram).</p>
                     <p class="text-[11px] text-slate-600"><strong>Referensi:</strong> US EPA - LDPE / Mixed Plastic Recycling Offset (-1.64 MT CO₂e / short ton virgin resin offset).</p>
                 </div>
 
@@ -1051,8 +1051,8 @@
 
         function calculateTKP3() {
             const sheets = parseFloat(document.getElementById('tkp3_sheets').value) || 0;
-            // EPA WARM LDPE Recycling factor: 2.8 kg CO2e / kg plastic (~0.0245 kg CO2e / sheet of 13.5g)
-            const avoided = sheets * 0.028;
+            // EPA WARM LDPE Recycling factor: 2.8 kg CO2e / kg plastic (~0.0056 kg CO2e / sheet of 2g)
+            const avoided = sheets * 0.0056;
 
             appState.tkp3.sheets = sheets;
             appState.tkp3.avoidedEmissions = avoided;
