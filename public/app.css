@@ -1,0 +1,70 @@
+body {
+            background-color: #f2eee3;
+            background-image: radial-gradient(#d3cbbe 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1e3a2b;
+        }
+
+        .stamp-border {
+            border: 4px dashed #1e3a2b;
+            border-radius: 16px;
+        }
+
+        .zine-card {
+            background-color: #fffef9;
+            box-shadow: 6px 6px 0px #1e3a2b;
+            border: 2px solid #1e3a2b;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .zine-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 8px 8px 0px #1e3a2b;
+        }
+
+        .tape-effect {
+            position: relative;
+        }
+        .tape-effect::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 110px;
+            height: 24px;
+            background-color: rgba(245, 200, 66, 0.65);
+            border-left: 2px dashed rgba(0,0,0,0.1);
+            border-right: 2px dashed rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .badge-stamp {
+            background: #d9532f;
+            color: white;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+            padding: 4px 12px;
+            transform: rotate(-3deg);
+            display: inline-block;
+            border: 2px solid #1e3a2b;
+            box-shadow: 2px 2px 0px #1e3a2b;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7f4eb;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e3a2b;
+            border-radius: 4px;
+        }
+
+/* Full-stack UX improvements */
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #f48061; outline-offset: 2px; }
+.is-saving { opacity: .7; pointer-events: none; }
